@@ -1,0 +1,27 @@
+---
+title: "对决定性过程相关文献的解读"
+date: "2021年1月19日"
+output:
+  bookdown::html_document2:
+    self_contained: false
+---
+
+```{r}
+library(biblioreport)
+library(bibliometrix)
+library(ggplot2)
+library(dplyr)
+
+theme_set(theme_bw())
+```
+
+
+
+
+```{r}
+data <- yg(deterministic_assembly, estimate_current_year = TRUE)
+ygc(data) +
+  labs(caption = "Note: Data for the current year is an estimation.",
+       title = "Publication Count on the 'Deteriministic assembly' Topic")
+```
+
