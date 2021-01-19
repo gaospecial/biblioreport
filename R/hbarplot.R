@@ -29,3 +29,12 @@ hbarplot <- function(d, n=NULL, show = c("rank","name"), sort = TRUE, decreasing
     theme(axis.text.y = element_text(face = "bold",
                                      margin = margin(t=1,r=0,b=0,l=0,unit = "pt")))
 }
+
+multi_dimension_hbarplot <- function(M, tags = c("AU","AU_CO_NR","AU_UN_NR","J9")){
+  require(cowplot)
+  plots <- lapply(tags, function(x){
+    tab <- table_tag(M, tag = x)
+    hbarplot(tab)
+  })
+  plot_grid(plotlist = plots, labels = "AUTO")
+}

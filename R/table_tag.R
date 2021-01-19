@@ -12,7 +12,7 @@
 #' @examples
 #' data <- data.frame(choice = c("a;b;c","a","d","a;d","c" ))
 #' table_tag(data, tag = "choice")
-table_tag <- function(data, tag = "AF", sep = ";"){
+table_tag <- function(data, tag = "AF", sep = ";", n = 10){
   if (!tag %in% colnames(data)) stop(paste0(tag, " is not presented in your data."))
   tab <- data %>%
     dplyr::pull({{ tag }}) %>%
@@ -21,9 +21,11 @@ table_tag <- function(data, tag = "AF", sep = ";"){
     trimws() %>%
     table() %>%
     sort(decreasing = TRUE)
+  if (is.numeric(n)) tab <- head(tab, n = n)
   d <- tibble::tibble(name = names(tab),
                       n = as.numeric(tab)) %>%
     dplyr::mutate(name = fct_reorder(name,n,.desc = TRUE))
+
   colnames(d) <- c(tag, "n")
   return(d)
 }
