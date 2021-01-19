@@ -15,11 +15,16 @@
 table_tag <- function(data, tag = "AF", sep = ";"){
   if (!tag %in% colnames(data)) stop(paste0(tag, " is not presented in your data."))
   tab <- data %>%
-    pull({{ tag }}) %>%
+    dplyr::pull({{ tag }}) %>%
     strsplit(split = {{ sep }}) %>%
     unlist() %>%
     trimws() %>%
     table() %>%
     sort(decreasing = TRUE)
-  return(tab)
+  d <- tibble::tibble(name = names(tab),
+                      n = as.numeric(tab)) %>%
+    dplyr::mutate(name = fct_reorder(name,n,.desc = TRUE))
+  colnames(d) <- c(tag, "n")
+  return(d)
 }
+
