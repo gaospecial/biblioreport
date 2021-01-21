@@ -19,7 +19,8 @@ yearly_growth <- function(x,
 
   d <- x %>% dplyr::group_by(.data$PY) %>%
     dplyr::count() %>%
-    dplyr::mutate_all(as.numeric())
+    dplyr::ungroup() %>%
+    dplyr::mutate_all(as.numeric)
   if (na.rm) d <- d %>% dplyr::filter(!is.na(.data$PY))
   if (estimate_current_year){
     this_year <- lubridate::year(Sys.time())
