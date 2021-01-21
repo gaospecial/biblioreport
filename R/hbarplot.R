@@ -1,7 +1,21 @@
+#' Horizontal barplot
+#'
+#' @param d is a vector, table, or two column data frame
+#' @param n is a number, only top n will be showed in the plot
+#' @param show is the label of bar
+#' @param sort whether to sort data `d`
+#' @param decreasing whether sort in decreasing order
+#'
+#' @return a ggplot object
+#' @export
+#'
+#' @examples
+#' hbarplot(c("a","a","b","c","c"))
 hbarplot <- function(d, n=NULL, show = c("rank","name"), sort = TRUE, decreasing = TRUE){
   show <- match.arg(show)
   require("forcats")
   require("ggplot2")
+  require("dplyr")
   if (is.factor(d)) d <- fct_count(d)
   if (is.vector(d)) d <- table(d)
   if (is.table(d) & sort)  d <- sort(d, decreasing = decreasing)
@@ -30,8 +44,20 @@ hbarplot <- function(d, n=NULL, show = c("rank","name"), sort = TRUE, decreasing
                                      margin = margin(t=1,r=0,b=0,l=0,unit = "pt")))
 }
 
+#' multiple dimension hbarplot
+#'
+#' @param M is a bibliometerixDB object here, but can be a ordinary data frame
+#' @param tags is a vector of colnames
+#'
+#' @return
+#' @export
+#'
+#' @examples
 multi_dimension_hbarplot <- function(M, tags = c("AU","AU_CO_NR","AU_UN_NR","J9")){
   require(cowplot)
+  if (any(!tags %in% colnames(M))){
+    stop(tags[!tags %in% colnames(deterministic_assembly)], " is not a column in M.")
+  }
   plots <- lapply(tags, function(x){
     tab <- table_tag(M, tag = x)
     hbarplot(tab)
