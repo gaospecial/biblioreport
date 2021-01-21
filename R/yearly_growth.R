@@ -38,9 +38,11 @@ yearly_growth <- function(x,
 }
 
 #' @rdname yearly_growth
+#' @export
 yg <- yearly_growth
 
 #' @rdname yearly_growth
+#' @export
 yearly_growth_curve <- function(data, mapping = ggplot2::aes_string("PY", "n")){
   growth_curve(data, mapping) +
     ggplot2::labs(x = "Year",
@@ -49,4 +51,5 @@ yearly_growth_curve <- function(data, mapping = ggplot2::aes_string("PY", "n")){
 }
 
 #' @rdname yearly_growth
+#' @export
 ygc <- yearly_growth_curve

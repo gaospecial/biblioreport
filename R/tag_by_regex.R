@@ -7,7 +7,7 @@
 #' @param sep default is ";"
 #'
 #' @return
-#' @export the name of new column
+#' @export
 #'
 #' @examples
 tag_by_regex <- function(x, pattern, pattern.names = names(pattern), sep = ";"){

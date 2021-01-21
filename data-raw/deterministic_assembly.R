@@ -14,4 +14,4 @@ deterministic_assembly <- metaTagExtraction(deterministic_assembly, Field = "AU_
   uniq_tag(Field = "AU_UN") %>%
   filter(str_detect(SC, "MICROBIOLOGY|ENVIRONMENTAL SCIENCE"))
 
-usethis::use_data(deterministic_assembly, overwrite = TRUE, internal = TRUE)
+usethis::use_data(deterministic_assembly, overwrite = TRUE)

@@ -99,7 +99,7 @@ simplified_network <- function(M, from = NULL, to = NULL, nNode = 30,
 }
 
 
-
+#' @export
 country_network <- function(M,
                             analysis = "collaboration",
                             network = "countries",
@@ -204,6 +204,7 @@ keyword_network <- function(M,
 
 ## 网络相关的函数
 
+#' @export
 range01 <- function(x){(x-min(x))/(max(x)-min(x))}
 
 
@@ -230,6 +231,7 @@ graph_add_node_degree <- function(g){
 }
 
 #' 添加节点属性
+#' @export
 graph_add_node_attr <- function(g, data, id = "id", cols = colnames(data)){
   # 依据 id 的对应关系将 data 中的属性加入到graph中，
   # id 是 data 中 node id 的列名, cols 是 data 中用到的列名
@@ -246,6 +248,7 @@ graph_add_node_attr <- function(g, data, id = "id", cols = colnames(data)){
 
 
 #' 设置 node size
+#' @export
 graph_set_node_size <- function(g, by = "degree", scale01 = TRUE, max_size = 10){
   value <- vertex_attr(g, name = by)
   if (isTRUE(scale01)){
@@ -258,6 +261,7 @@ graph_set_node_size <- function(g, by = "degree", scale01 = TRUE, max_size = 10)
 
 
 
+#' @export
 graph_set_node_color <- function(g, by = "year", decreasing = FALSE, scale01 = FALSE, palette_name = "YlOrRd"){
   ## 为 graph 设置节点颜色
   ## 默认按年份着色，或者其它 node 属性着色
@@ -281,6 +285,7 @@ graph_set_node_color <- function(g, by = "year", decreasing = FALSE, scale01 = F
 
 
 
+#' @export
 graph_subgraph <- function(g, by = "degree", slice = "PY", topN = 10, ratio = 0.1){
   if( !by %in% vertex_attr_names(g)) stop(by, " is not a graph attribute.\n")
   if( !slice %in% vertex_attr_names(g)) stop(slice, " is not a graph attribute.\n")
@@ -293,6 +298,7 @@ graph_subgraph <- function(g, by = "degree", slice = "PY", topN = 10, ratio = 0.
 
 
 
+#' @export
 vis_histNet <- function(g,
                         node.title = "title",
                         node.size = "size",
