@@ -13,15 +13,109 @@ library(ggplot2)
 library(dplyr)
 
 theme_set(theme_bw())
+
+# load data
+bib <- deterministic_assembly
+
+```
+
+## 数量
+
+以英文“Deteriministic assembly”为关键字，在 WoS 数据库中搜索可以发现，
+“决定性过程”近年来的发表的文献数量持续增加。
+
+
+```{r}
+data <- yg(bib, estimate_current_year = TRUE)
+ygc(data) +
+  labs(caption = "Note: Data for the current year is an estimation.",
+       title = "Publication Count on the 'Deteriministic assembly' Topic")
+```
+
+## 主题
+
+这里面有很多非生物学科的论文，这部分内容要去掉。
+
+```{r}
+SC <- table_tag(bib, tag = "SC", n = NULL) %>%
+  mutate(SC = fct_shrink(SC, only = 19))
+library(treemap)
+treemap(SC, index = "SC", vSize = "n")
+```
+## 国家
+
+```{r}
+country <- table_tag(bib, tag = "AU_CO_NR")
+hbarplot(country) +
+  labs(x="rank",y="nRecord")
+```
+
+```{r}
+country_network(bib)
+```
+
+
+## 机构
+
+```{r}
+university <- table_tag(bib, tag = "AU_UN_NR")
+hbarplot(university) +
+  labs(x="rank",y="nRecord")
+```
+```{r}
+university_network(bib, nNode = 30, delete_isolate = F, edge_weight_cutoff = 2)
 ```
 
 
 
+## 关键词
 
 ```{r}
-data <- yg(deterministic_assembly, estimate_current_year = TRUE)
-ygc(data) +
-  labs(caption = "Note: Data for the current year is an estimation.",
-       title = "Publication Count on the 'Deteriministic assembly' Topic")
+keyword <- table_tag(bib, tag="ID",n=30) %>% filter(!str_detect(ID,"^$"))
+hbarplot(keyword) +
+  labs(x="rank",y="nRecord")
+```
+
+```{r}
+keyword_network(bib,nNode = 30,edge_weight_cutoff = 10)
+```
+
+
+## 期刊
+
+```{r}
+journal <- table_tag(bib, tag="J9")
+hbarplot(journal) +
+  labs(y="nRecord",x="rank",subtitle = "Top journal")
+```
+## Text mining
+
+```{r}
+title <- bib %>%
+  select(SR, TI) %>%
+  as_tibble()
+
+library(tidytext)
+library(tidyr)
+stop_words
+title_two_word <- title %>% 
+  unnest_ngrams(bigram, TI, n = 2) %>%
+  separate(bigram, c("w1","w2"), sep = " ") %>%
+  filter(!w1 %in% stop_words$word,
+         !w2 %in% stop_words$word) %>%
+  count(w1,w2, sort = T)
+
+```
+```{r}
+library(igraph)
+library(ggraph)
+title_two_word_graph <- title_two_word %>%
+  filter(n > 5) %>%
+  graph_from_data_frame()
+
+title_two_word_graph %>%
+  ggraph(layout = "nicely") +
+  geom_edge_link(aes(edge_alpha = n)) +
+  geom_node_text(aes(label = name)) 
 ```
 
