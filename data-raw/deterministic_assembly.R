@@ -11,7 +11,11 @@ deterministic_assembly <- convert2df(file = files,
                                  format = "plaintext")
 deterministic_assembly <- metaTagExtraction(deterministic_assembly, Field = "AU_CO") %>%
   uniq_tag(Field = "AU_CO") %>%
-  uniq_tag(Field = "AU_UN") %>%
-  filter(str_detect(SC, "MICROBIOLOGY|ENVIRONMENTAL SCIENCE"))
+  uniq_tag(Field = "AU_UN")
+
+non_biological <- c("NUCLEAR SCIENCE|COMPUTER SCIENCE|MECHANICS|PHYSICS|CHEMISTRY|OPERATIONS RESEARCH|ENGINEERING|AUTOMATION|MATERIALS")
+
+deterministic_assembly <- deterministic_assembly %>%
+  filter(!str_detect(SC, non_biological))
 
 usethis::use_data(deterministic_assembly, overwrite = TRUE)
