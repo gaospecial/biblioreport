@@ -225,6 +225,7 @@ graph_add_node_pagerank <- function(g){
 
 #' @inheritParams  graph_add_node_pagerank
 #' @name graph_add_node
+#' @export
 graph_add_node_degree <- function(g){
   V(g)$degree <- degree(g)
   return(g)
