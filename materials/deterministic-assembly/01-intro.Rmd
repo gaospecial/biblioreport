@@ -68,8 +68,8 @@ by_SC <- bib %>% select(SR, SC) %>%
   group_by(SC) %>% 
   summarise(l = list(SR)) %>%
   ungroup()
-l <- by_SC$l
-names(l) <- by_SC$SC
+sc_list <- by_SC$l
+names(sc_list) <- by_SC$SC
 library(UpSetR)
 upset(fromList(sc_list), nsets = 10, keep.order = T)
 ```
@@ -105,7 +105,9 @@ count %>% filter(WC %in% top_WC$WC) %>%
   arrange(WC, PY) %>%
   group_by(WC) %>%
   mutate(cumsum = cumsum(n)) %>%
-  ggplot(aes(PY,cumsum, color = factor(WC))) +
+  ggplot(aes(PY,
+             cumsum, 
+             color = fct_reorder2(WC,PY,cumsum,.desc = TRUE))) +
   geom_line() +
   geom_point() +
   labs(x = "Year", y= "Cumsum of nRecord",
@@ -208,7 +210,7 @@ title <- bib %>%
 
 library(tidytext)
 library(tidyr)
-stop_words
+glimpse(stop_words)
 title_two_word <- title %>% 
   unnest_ngrams(bigram, TI, n = 2) %>%
   separate(bigram, c("w1","w2"), sep = " ") %>%
@@ -267,4 +269,47 @@ graph %>%
   geom_node_text(aes(label = name,color=degree),
                  show.legend = F) +
   theme_graph(base_family = "sans")
+```
+
+## 核心文献
+
+首先是研究论文的时间线。
+
+```{r}
+research_hist <- histNetwork(bib %>% filter(str_detect(DT,"ARTICLE")) , 
+                             verbose = FALSE)
+research_histplot <- histPlot(research_hist, verbose = FALSE)
+research_histplot$g
+```
+
+```{r}
+research_core_article <- extract_from_hist_graph(research_hist$M, research_histplot$net)
+# glimpse(research_core_article)
+
+
+library(DT)
+research_core_article %>% 
+  mutate(link = permanent_link(id = DI, title = TI, alt = AB, type = "html")) %>%
+   select(SR, link) %>%
+  datatable(escape = FALSE)
+```
+
+其次是综述的时间线。
+
+```{r}
+review_hist <- histNetwork(bib %>% filter(str_detect(DT, "REVIEW")),
+                           verbose = FALSE)
+review_histplot <- histPlot(review_hist, verbose = FALSE)
+review_histplot$g
+review_core_article <- extract_from_hist_graph(review_hist$M, review_histplot$net)
+review_core_article %>% 
+  mutate(link = permanent_link(id = DI, title = TI, alt = AB, type = "html")) %>%
+   select(SR, link) %>%
+  datatable(escape = FALSE)
+```
+
+``` {.javascript}
+$(".dataTable tbody").on("click", "tr", function(event){
+  alert($(this).text());
+});
 ```
