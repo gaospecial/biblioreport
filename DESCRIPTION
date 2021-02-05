@@ -17,6 +17,7 @@ Imports:
     ggplot2,
     lubridate,
     tibble,
-    forcats
+    forcats,
+    DT
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1

@@ -1,6 +1,7 @@
 # fix or enhancement of [bibliometrix] packages
 
 # remove duplications in fields
+#' @export
 uniq_tag <- function(M, Field = "AU_CO", sep = ";"){
   value <- M[[Field]]
   new_field_name <- paste0(Field, "_NR")
@@ -11,6 +12,7 @@ uniq_tag <- function(M, Field = "AU_CO", sep = ";"){
   return(M)
 }
 
+#' @export
 permanent_link <- function(base_url="https://doi.org/",
                            type=c("markdown","html"),
                            id=NULL,title=NULL,alt=NULL){
@@ -21,6 +23,7 @@ permanent_link <- function(base_url="https://doi.org/",
 }
 
 # 提取历史引证网络中的论文
+#' @export
 extract_from_hist_graph <- function(M=NULL, g=NULL){
   require("stringr")
   name <- V(g)$name
@@ -29,6 +32,7 @@ extract_from_hist_graph <- function(M=NULL, g=NULL){
   M %>% filter(toupper(DI) %in% toupper(doi))
 }
 
+#' @export
 authorProdOverTime2 <- function (M, k = 10, graph = TRUE) {
   # 修改 bibliometrix 的函数
   M$TC = as.numeric(M$TC)
@@ -92,6 +96,7 @@ authorProdOverTime2 <- function (M, k = 10, graph = TRUE) {
 
 
 # just a optimized ggplotly()
+#' @export
 plot.ly <- function (g, tooltip = c("text"), ...) {
   require(plotly)
   ggplotly(g, tooltip = tooltip, ...) %>%
@@ -103,6 +108,7 @@ plot.ly <- function (g, tooltip = c("text"), ...) {
 }
 
 # determine wheter it is part of China
+#' @export
 is.part_of_china <- function (x) {
   require(stringr)
   str_detect(x,
