@@ -27,9 +27,11 @@ permanent_link <- function(base_url="https://doi.org/",
 extract_from_hist_graph <- function(M=NULL, g=NULL){
   require("stringr")
   name <- V(g)$name
-  doi <- str_extract_all(name, "10\\.[0-9]+\\/\\S+")
-  doi <- unlist(doi)
-  M %>% filter(toupper(DI) %in% toupper(doi))
+  pattern = gsub(" DOI.*$","",name)
+  # doi <- str_extract_all(name, "10\\.[0-9]+\\/\\S+")
+  # doi <- unlist(doi)
+  # M %>% filter(toupper(DI) %in% toupper(doi))
+  M[rownames(M) %in% pattern,]
 }
 
 #' @export
