@@ -320,3 +320,51 @@ vis_histNet <- function(g,
 
 
 
+
+#' Two term network
+#'
+#' @param graph igraph object
+#'
+#' @return ggplot
+#' @export
+#'
+#' @examples
+two_term_network = function(graph,
+                            graph_layout = "nicely",
+                            edge_alpha = "weight",
+                            edge_width = "weight",
+                            edge_color = "weight",
+                            node_color = "degree",
+                            node_size = "degree",
+                            node_label = "name"){
+  graph %>%
+    graph_add_node_degree() %>%
+    ggraph(layout = graph_layout) +
+    geom_edge_link(aes_string(edge_alpha = edge_alpha,
+                              edge_width = edge_width,
+                              edge_color = edge_color),
+                   arrow = arrow(length = unit(1.5,"mm")),
+                   start_cap = circle(3, "mm"),
+                   end_cap = circle(3,"mm"),
+                   show.legend = F) +
+    geom_node_label(aes_string(label = node_label,color=node_color,size=node_size),
+                    label.size = NA, alpha = 1/2,
+                   show.legend = FALSE) +
+    scale_size(range = c(3,6)) +
+    theme_graph(base_family = "sans")
+}
+
+igraph_title = function(object){
+  if (!is_igraph(object)) {
+    stop("Not a graph object")
+  }
+  title <- paste("IGRAPH", substr(graph_id(object), 1, 7),
+                 paste0(c("U", "D")[is_directed(object) + 1],
+                        c("-", "N")[is_named(object) + 1],
+                        c("-", "W")[is_weighted(object) + 1],
+                        c("-", "B")[is_bipartite(object) + 1]),
+                  vcount(object),
+                  ecount(object),
+                  "-- ")
+  return(title)
+}
