@@ -8,7 +8,7 @@
 #'
 #' @examples
 two_word_phrase = function(df, field = c("TI","AB","content"),
-                           log_transform = TRUE,
+                           log_transform = FALSE,
                            word_pattern = "^[[:alpha:]]+"){
   field = match.arg(field)
   if (!field %in% colnames(df)) stop("Field is not in data: ", field)

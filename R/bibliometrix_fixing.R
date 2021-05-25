@@ -39,18 +39,18 @@ authorProdOverTime2 <- function (M, k = 10, graph = TRUE) {
   # 修改 bibliometrix 的函数
   M$TC = as.numeric(M$TC)
   M$PY = as.numeric(M$PY)
-  AU = names(tableTag(M, "AU"))
-  k = min(k, length(AU))
-  AU = AU[1:k]
+  AF = table_tag(M, "AF") %>% pull(AF)
+  k = min(k, length(AF))
+  AF = AF[1:k]
   Y = as.numeric(substr(Sys.time(), 1, 4))
   if (!("DI" %in% names(M))) {
     M$DI = "NA"
   }
 
-  list <- lapply(1:length(AU), function(i){
-    ind = which(regexpr(AU[i], M$AU, fixed = TRUE) > -1)
+  list <- lapply(1:length(AF), function(i){
+    ind = which(regexpr(AF[i], M$AF, fixed = TRUE) > -1)
     TCpY = M$TC[ind] / (Y - M$PY[ind] + 1)
-    tibble( Author = rep(AU[i], length(ind)),
+    tibble( Author = rep(AF[i], length(ind)),
             year = M$PY[ind],
             TI = M$TI[ind],
             SO = M$SO[ind],
@@ -66,13 +66,13 @@ authorProdOverTime2 <- function (M, k = 10, graph = TRUE) {
       TCpY = sum(.data$TCpY)
     )
   df2 = as.data.frame(df2)
-  df2$Author = factor(df2$Author, levels = AU[k:1])
+  df2$Author = factor(df2$Author, levels = AF[k:1])
   g <- ggplot(df2, aes(year,Author)) +
     geom_point(aes(alpha = TCpY, size = freq),
                color = "dodgerblue4") +
     scale_size(range = c(2, 6)) +
     scale_alpha(range = c(0.3, 1)) +
-    scale_x_continuous(breaks = function(x) seq(min(x),max(x),by = 2)) +
+    scale_x_continuous(breaks = function(x) round(seq(min(x),max(x),by = 2))) +
     guides(size = guide_legend(order = 1,
                                "N.Articles"),
            alpha = guide_legend(order = 2,
@@ -85,8 +85,8 @@ authorProdOverTime2 <- function (M, k = 10, graph = TRUE) {
       alpha = 0.3
     )
   df$DOI = as.character(df$DOI)
-  res <- list(dfAU = df2,
-              dfPapersAU = df,
+  res <- list(dfAF = df2,
+              dfPapersAF = df,
               graph = g)
   if (isTRUE(graph)) {
     return(g)

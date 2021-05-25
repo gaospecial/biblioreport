@@ -343,7 +343,7 @@ two_term_network = function(graph,
     geom_edge_link(aes_string(edge_alpha = edge_alpha,
                               edge_width = edge_width,
                               edge_color = edge_color),
-                   arrow = arrow(length = unit(1.5,"mm")),
+                   arrow = arrow(length = unit(4,"mm")),
                    start_cap = circle(3, "mm"),
                    end_cap = circle(3,"mm"),
                    show.legend = F) +
