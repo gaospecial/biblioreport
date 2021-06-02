@@ -1,3 +1,15 @@
+---
+title: "项目规划"
+date: "`r Sys.Date()`"
+output:
+  bookdown::html_document2:
+    self_contained: false
+    toc: true
+    toc_float: true
+    section_numbered: false
+---
+
+
 # 项目规划
 
 这是一个用来做文献信息存取、整合、分析、报告和可视化的包。
@@ -47,13 +59,25 @@
 - text mining 
   - word cloud
   - network
+    - 弦图
+    - 连线图
   - tf-idf
-  
+
+
+### 连线图
+
+```{r fig.cap="使用连线图表示国家间的合作关系"}
+img_url = "https://vnote-1251564393.cos.ap-chengdu.myqcloud.com/typora-img/20210602104251.png"
+knitr::include_graphics(path = img_url)
+```
+
+
+
 ## 易用性
 
 * 函数支持 `group_by()` 语法 [see `tidygraph`]
 
-  ``` {r}
+  ```{.r}
   bib %>% group_by(WC) %>% yearly_growth()
   
   bib %>% group_by(AF) %>% summarize(total = sum(TC, na.rm = TRUE))
