@@ -21,10 +21,10 @@ table_tag <- function(data, tag = "AF", sep = ";", n = 10){
     trimws() %>%
     table() %>%
     sort(decreasing = TRUE)
+  tab = tab[names(tab)!="NA"]
   if (is.numeric(n)) tab <- head(tab, n = n)
   d <- tibble::tibble(name = names(tab),
                       n = as.numeric(tab)) %>%
-    dplyr::filter(name != "NA") %>%
     dplyr::mutate(name = fct_reorder(name,n,.desc = TRUE))
 
   colnames(d) <- c(tag, "n")

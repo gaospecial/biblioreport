@@ -1,5 +1,28 @@
 # fix or enhancement of [bibliometrix] packages
 
+# UTF-8 support
+
+.convert2df <- function(file, dbsource = "wos", format = "plaintext"){
+  D <- .importFiles(file)
+  M = bibliometrix:::isi2df(D)
+  class(M) <- c("bibliometrixDB", "data.frame")
+  return(M)
+}
+
+.importFiles <- function (...) {
+  arguments <- unlist(list(...))
+  k = length(arguments)
+  D = list()
+  enc = "UTF-8"
+  for (i in 1:k) {
+    D[[i]] = suppressWarnings(readLines(arguments[i], encoding = enc))
+  }
+  D = unlist(D)
+  # options(encoding = enc)
+  # Encoding(D) <- "UTF-8"
+  return(D)
+}
+
 # remove duplications in fields
 #' @export
 uniq_tag <- function(M, Field = "AU_CO", sep = ";"){

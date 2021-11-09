@@ -3,7 +3,7 @@ title: "项目规划"
 date: "`r Sys.Date()`"
 output:
   bookdown::html_document2:
-    self_contained: false
+    self_contained: true
     toc: true
     toc_float: true
     section_numbered: false
@@ -104,3 +104,6 @@ knitr::include_graphics(path = img_url)
 * 参数名
   - graph 返回 graph 对象
   - plot 返回 ggplot 对象或者绘图
+* UTF-8 支持
+  - bibliometrix 不支持 UTF-8 编码；
+  - 在代码中多次使用转换文本 `iconv(D, "latin1", "ASCII", sub = "")`

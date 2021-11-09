@@ -104,7 +104,7 @@ country_network <- function(M,
                             analysis = "collaboration",
                             network = "countries",
                             field = "AU_CO_NR",
-                            edge_weight_cutoff = 5,
+                            edge_weight_cutoff = 0,
                             nNode = 20,
                             graph = FALSE,
                             ...){
@@ -343,12 +343,12 @@ two_term_network = function(graph,
     geom_edge_link(aes_string(edge_alpha = edge_alpha,
                               edge_width = edge_width,
                               edge_color = edge_color),
-                   arrow = arrow(length = unit(4,"mm")),
+                   arrow = arrow(length = unit(3,"mm"), type = "closed"),
                    start_cap = circle(3, "mm"),
                    end_cap = circle(3,"mm"),
                    show.legend = F) +
     geom_node_label(aes_string(label = node_label,color=node_color,size=node_size),
-                    label.size = NA, alpha = 1/2,
+                    label.size = NA, alpha = 2/3,
                    show.legend = FALSE) +
     scale_size(range = c(3,6)) +
     theme_graph(base_family = "sans")
