@@ -11,8 +11,9 @@
 #'
 #' @examples
 #' a <- data.frame(let = letters[1:4], n = c(2,1,5,7))
-#' (fct_ordered <- fct_reorder(a$let, a$n, .desc = TRUE))
-#' (fct_shrinked <- fct_shrink(fct_order, only = 2))
+#' library("forcats")
+#' (fct_ordered <- forcats::fct_reorder(a$let, a$n, .desc = TRUE))
+#' (fct_shrinked <- fct_shrink(fct_ordered, only = 2))
 fct_shrink <- function(f,
                        only = 9,
                        ...){
